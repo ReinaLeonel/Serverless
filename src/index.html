@@ -163,7 +163,7 @@
 			function borra()
 			{
 				var client = new WSClient(URL);
-				client.postJson("borra_usuario",
+				client.postJson("borra_articulo",
 				{
 					busqueda: get("borra_busqueda").value
 				},
@@ -196,7 +196,7 @@
 			<br>
 			<button type="button" onclick="alta()" style="width:250px;height:40px">Agregar articulo</button></br>
 			<button type="button" onclick="limpia_alta()" style="width:250px;height:40px">Limpiar pantalla</button></br>
-			<button type="button" onclick="oculta_pantalla('alta_usuario')" style="width:250px;height:40px">Regresar</button></br>
+			<button type="button" onclick="oculta_pantalla('alta_articulo')" style="width:250px;height:40px">Regresar</button></br>
 		</div>
 
 		<div id="consulta_articulo" style="display:none">
@@ -208,7 +208,7 @@
 			</div>
 			Buscar *<br>
 			<input type="email" id="consulta_articuloB" value="" style="width:250px" placeholder="Buscar..."/><br>
-			<div id="modifica_usuario" style="display:none">
+			<div id="modifica_articulo" style="display:none">
 				Nombre *<br>
 				<input type="text" id="consulta_nombreArticulo" value="" style="width:250px"/><br>
 				Descripcion del Articulo *<br>
@@ -233,17 +233,17 @@
 		</div>
 
 		<div id="borra_articulo" style="display:none">
-			<h2 style="text-align:center">Borra usuario</h2>
+			<h2 style="text-align:center">Borra articulo</h2>
 			Email *<br>
 			<input type="email" id="borra_email" value="" style="width:250px"/><br><br>
 			<button type="button" onclick="borra()" style="width:250px;height:40px">Borrar articulo</button></br>
-			<button type="button" onclick="oculta_pantalla('borra_usuario')" style="width:250px;height:40px">Regresar</button></br>
+			<button type="button" onclick="oculta_pantalla('borra_articulo')" style="width:250px;height:40px">Regresar</button></br>
 		</div>
 
 		<div id="menu">
-			<button type="button" onclick="limpia_alta();muestra_pantalla('alta_usuario')" style="width:250px;height:40px">Alta usuario</button></br>
-			<button type="button" onclick="limpia_consulta();muestra_pantalla('consulta_usuario')" style="width:250px;height:40px">Consulta usuario</button></br>
-			<button type="button" onclick="limpia_borra();muestra_pantalla('borra_usuario')" style="width:250px;height:40px">Borra usuario</button></br>
+			<button type="button" onclick="limpia_alta();muestra_pantalla('alta_articulo')" style="width:250px;height:40px">Alta Articulo</button></br>
+			<button type="button" onclick="limpia_consulta();muestra_pantalla('consulta_articulo')" style="width:250px;height:40px">Consulta articulo</button></br>
+			<button type="button" onclick="limpia_borra();muestra_pantalla('borra_articulo')" style="width:250px;height:40px">Borra articulo</button></br>
 		</div>
 	</div>
 	</body>
