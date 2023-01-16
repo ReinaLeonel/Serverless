@@ -53,7 +53,7 @@
 				get("alta_fecha_nacimiento").value = "";
 				get("alta_telefono").value = "";
 				get("alta_genero").value = "";
-				get("alta_imagen").src = "/api/Get?nombre=/usuario_sin_foto.png";
+				get("alta_imagen").src = "/usuario_sin_foto.png";
 				foto = null;
 			}
 			function alta()
@@ -92,7 +92,7 @@
 				get("consulta_fecha_nacimiento").value = "";
 				get("consulta_telefono").value = "";
 				get("consulta_genero").value = "";
-				get("consulta_imagen").src = "/api/Get?nombre=/usuario_sin_foto.png";
+				get("consulta_imagen").src = "/usuario_sin_foto.png";
 			}
 			function cierra_pantalla_consulta()
 			{
@@ -131,7 +131,7 @@
 						get("consulta_telefono").value = result.telefono != null ? result.telefono : "";
 						get("consulta_genero").value = result.genero == "M" ? "Masculino" : result.genero == "F" ? "Femenino" : "";
 						foto = result.foto;
-                                                get("consulta_imagen").src = foto != null ? "data:image/jpeg;base64," + foto : "/api/Get?nombre=/usuario_sin_foto.png"
+                                                get("consulta_imagen").src = foto != null ? "data:image/jpeg;base64," + foto : "/usuario_sin_foto.png"
 
 						oculta("encabezado_consulta");
 						muestra("encabezado_modifica");
@@ -215,7 +215,7 @@
 			</select>
 			<br>
 			<br>
-			<img id="alta_imagen" width="100px" src="/api/Get?nombre=/usuario_sin_foto.png"></img><br>
+			<img id="alta_imagen" width="100px" src="/usuario_sin_foto.png"></img><br>
 			<input type="file" onchange="readSingleFile(files,get('alta_imagen'))" multiple="false" accept="image/*"/><br>
 			<br>
 			<button type="button" onclick="alta()" style="width:250px;height:40px">Agregar usuario</button></br>
@@ -251,7 +251,7 @@
 				</select>
 				<br>
 				<br>
-				<img id="consulta_imagen" width="100px" src="/api/Get?nombre=/usuario_sin_foto.png"></img>
+				<img id="consulta_imagen" width="100px" src="/usuario_sin_foto.png"></img>
 				<input type="file" id="consulta_file" onchange="readSingleFile(files,get('consulta_imagen'))" multiple="false" accept="image/*"/><br>
 				<button onclick="quita_foto()">Quitar foto</button><br>
 				<br>
