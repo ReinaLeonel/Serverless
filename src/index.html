@@ -46,34 +46,27 @@
 			}
 			function limpia_alta()
 			{
-				get("alta_email").value = "";
-				get("alta_nombre").value = "";
-				get("alta_apellido_paterno").value = "";
-				get("alta_apellido_materno").value = "";
-				get("alta_fecha_nacimiento").value = "";
-				get("alta_telefono").value = "";
-				get("alta_genero").value = "";
+				get("alta_nombreArticulo").value = "";
+				get("alta_descripcionArticulo").value = "";
+				get("alta_precio").value = "";
+				get("alta_cantidadAlmacen").value = "";
 				get("alta_imagen").src = "/usuario_sin_foto.png";
 				foto = null;
 			}
 			function alta()
 			{
-				var genero = get("alta_genero").value;
 				var cliente = new WSClient(URL);
-				var usuario =
+				var articulo =
 				{
-					email: get("alta_email").value,
-					nombre: get("alta_nombre").value,
-					apellido_paterno: get("alta_apellido_paterno").value,
-					apellido_materno: get("alta_apellido_materno").value != "" ? get("alta_apellido_materno").value : null,
-					fecha_nacimiento: get("alta_fecha_nacimiento").value != "" ? new Date(get("alta_fecha_nacimiento").value).toISOString() : null,
-					telefono: get("alta_telefono").value != "" ? get("alta_telefono").value : null,
-					genero: get("alta_genero").value == "Masculino" ? "M" : get("alta_genero").value == "Femenino" ? "F" : null,
+					nombreArticulo: get("alta_nombreArticulo").value,
+					descripcionArticulo: get("alta_descripcionArticulo").value,
+					precio: get("alta_precio").value,
+					cantidadAlmacen: get("alta_cantidadAlmacen").value,
 					foto: foto
 				};
-				cliente.postJson("alta_usuario",
+				cliente.postJson("alta_articulo",
 				{
-					usuario: usuario
+					articulo: articulo
 				},
 				function(code,result)
 				{
@@ -85,23 +78,20 @@
 			}
 			function limpia_consulta()
 			{
-				get("consulta_email").value = "";
-				get("consulta_nombre").value = "";
-				get("consulta_apellido_paterno").value = "";
-				get("consulta_apellido_materno").value = "";
-				get("consulta_fecha_nacimiento").value = "";
-				get("consulta_telefono").value = "";
-				get("consulta_genero").value = "";
+				get("consulta_nombreArticulo").value = "";
+				get("consulta_descripcionArticulo").value = "";
+				get("consulta_precio").value = "";
+				get("consulta_cantidadAlmacen").value = "";
 				get("consulta_imagen").src = "/usuario_sin_foto.png";
 			}
 			function cierra_pantalla_consulta()
 			{
-				oculta_pantalla('consulta_usuario');
+				oculta_pantalla('consulta_articulo');
 				muestra("encabezado_consulta");
 				muestra("boton_consulta");
-				oculta("encabezado_modifica");
-				oculta("modifica_usuario");
-				get("consulta_email").readOnly = false;
+				oculta("encabezado_compra"); //encabezado_modifica
+				oculta("busqueda_articulo"); //modifica_usuario
+				get("consulta_articuloB").readOnly = false;
 			}
 			function quita_foto()
 			{
@@ -112,32 +102,31 @@
 			function consulta()
 			{
 				var cliente = new WSClient(URL);
-				cliente.postJson("consulta_usuario",
+				cliente.postJson("consulta_articulo",
 				{
-					// se debe pasar como parametro el email del usuario a consultar
-					// si el usuario no existe regresa un error
-					email: get("consulta_email").value
+					// se debe pasar como parametro una palabra a buscar (en los campos nombre y descripcion del articulo)
+					// si el dato no existe regresa un error
+					busqueda: get("consulta_articuloB").value,
+					//nombreArticulo: get("consulta_articulo").value,
+					//descripcionArticulo: get("consulta_articulo").value
 				},
 				function(code,result)
 				{
 					if (code == 200)
 					{
 						limpia_consulta();
-						get("consulta_email").value = result.email;
-						get("consulta_nombre").value = result.nombre;
-						get("consulta_apellido_paterno").value = result.apellido_paterno;
-						get("consulta_apellido_materno").value = result.apellido_materno != null ? result.apellido_materno : "";
-						get("consulta_fecha_nacimiento").value = new Date(result.fecha_nacimiento+"Z").toLocaleString("sv-SE").replace(" ","T");
-						get("consulta_telefono").value = result.telefono != null ? result.telefono : "";
-						get("consulta_genero").value = result.genero == "M" ? "Masculino" : result.genero == "F" ? "Femenino" : "";
+						get("consulta_nombreArticulo").value = result.nombreArticulo;
+						get("consulta_descripcionArticulo").value = result.descripcionArticulo;
+						get("consulta_precio").value = result.precio;
+						get("consulta_cantidadAlmacen").value = result.cantidadAlmacen;
 						foto = result.foto;
                                                 get("consulta_imagen").src = foto != null ? "data:image/jpeg;base64," + foto : "/usuario_sin_foto.png"
 
 						oculta("encabezado_consulta");
-						muestra("encabezado_modifica");
-						muestra("modifica_usuario");
+						muestra("encabezado_compra");
+						muestra("busqueda_articulo");
 						oculta("boton_consulta");
-						get("consulta_email").readOnly = true;
+						get("consulta_articuloB").readOnly = true;
 					}
 					else
 						// el objeto "result" es de tipo Error
@@ -147,20 +136,17 @@
 			function modifica()
 			{
 				var cliente = new WSClient(URL);
-				var usuario =
+				var articulo =
 				{
-					email: get("consulta_email").value,
-					nombre: get("consulta_nombre").value,
-					apellido_paterno: get("consulta_apellido_paterno").value,
-					apellido_materno: get("consulta_apellido_materno").value != "" ? get("consulta_apellido_materno").value : null,
-					fecha_nacimiento: get("consulta_fecha_nacimiento").value != "" ? new Date(get("consulta_fecha_nacimiento").value).toISOString() : null,
-					telefono: get("consulta_telefono").value != "" ? get("consulta_telefono").value : null,
-					genero: get("consulta_genero").value == "Masculino" ? "M" : get("consulta_genero").value == "Femenino" ? "F" : null,
+					nombreArticulo: get("consulta_nombreArticulo").value,
+					descripcionArticulo: get("consulta_descripcionArticulo").value,
+					precio: get("consulta_precio").value,
+					cantidadAlmacen: get("consulta_cantidadAlmacen").value,
 					foto: foto
 				};
-				cliente.postJson("modifica_usuario",
+				cliente.postJson("busqueda_articulo",
 				{
-					usuario: usuario
+					articulo: articulo
 				},
 				function(code,result)
 				{
@@ -172,14 +158,14 @@
 			}
 			function limpia_borra()
 			{
-				get("borra_email").value = "";
+				get("borra_busqueda").value = "";
 			}
 			function borra()
 			{
 				var client = new WSClient(URL);
 				client.postJson("borra_usuario",
 				{
-					email: get("borra_email").value
+					busqueda: get("borra_busqueda").value
 				},
 				function(code,result)
 				{
@@ -193,82 +179,64 @@
 	</head>
 	<body>
 	<div style="width:250px;margin:auto">
-		<div id="alta_usuario" style="display:none">
-			<h2 style="text-align:center">Alta de usuario</h2>
-			Email *<br>
-			<input type="email" id="alta_email" value="" style="width:250px"/><br>
-			Nombre *<br>
-			<input type="text" id="alta_nombre" value="" style="width:250px"/><br>
-			Apellido paterno *<br>
-			<input type="text" id="alta_apellido_paterno" value="" style="width:250px"/><br>
-			Apellido materno<br>
-			<input type="text" id="alta_apellido_materno" value="" style="width:250px"/><br>
-			Fecha de nacimiento *<br>
-			<input type="datetime-local" id="alta_fecha_nacimiento" value="" style="width:250px"/><br>
-			Teléfono<br>
-			<input type="number" id="alta_telefono" value="" style="width:250px"/><br>
-			Genero<br>
-			<select id="alta_genero" style="width:250px">
-				<option></option>
-				<option>Masculino</option>
-				<option>Femenino</option>
-			</select>
+		<div id="alta_articulo" style="display:none">
+			<h2 style="text-align:center">Captura de articulos</h2>
+			Nombre del Articulo *<br>
+			<input type="email" id="alta_nombreArticulo" value="" style="width:250px"/><br>
+			Descripcion del Articulo *<br>
+			<input type="text" id="alta_descripcionArticulo" value="" style="width:250px"/><br>
+			Precio del articulo*<br>
+			<input type="text" id="alta_precio" value="" style="width:250px"/><br>
+			Cantidad de articulos en almacen *<br>
+			<input type="text" id="alta_descripcionArticulo" value="" style="width:250px"/><br>
 			<br>
 			<br>
 			<img id="alta_imagen" width="100px" src="/usuario_sin_foto.png"></img><br>
 			<input type="file" onchange="readSingleFile(files,get('alta_imagen'))" multiple="false" accept="image/*"/><br>
 			<br>
-			<button type="button" onclick="alta()" style="width:250px;height:40px">Agregar usuario</button></br>
+			<button type="button" onclick="alta()" style="width:250px;height:40px">Agregar articulo</button></br>
 			<button type="button" onclick="limpia_alta()" style="width:250px;height:40px">Limpiar pantalla</button></br>
 			<button type="button" onclick="oculta_pantalla('alta_usuario')" style="width:250px;height:40px">Regresar</button></br>
 		</div>
 
-		<div id="consulta_usuario" style="display:none">
+		<div id="consulta_articulo" style="display:none">
 			<div id="encabezado_consulta">
-				<h2 style="text-align:center">Consulta usuario</h2>
+				<h2 style="text-align:center">Compra de Artículos</h2>
 			</div>
-			<div id="encabezado_modifica" style="display:none">
-				<h2 style="text-align:center">Modifica usuario</h2>
+			<div id="encabezado_compra" style="display:none">
+				<h2 style="text-align:center">Compra de Artículos</h2>
 			</div>
-			Email *<br>
-			<input type="email" id="consulta_email" value="" style="width:250px"/><br>
+			Buscar *<br>
+			<input type="email" id="consulta_articuloB" value="" style="width:250px" placeholder="Buscar..."/><br>
 			<div id="modifica_usuario" style="display:none">
 				Nombre *<br>
-				<input type="text" id="consulta_nombre" value="" style="width:250px"/><br>
-				Apellido paterno *<br>
-				<input type="text" id="consulta_apellido_paterno" value="" style="width:250px"/><br>
-				Apellido materno<br>
-				<input type="text" id="consulta_apellido_materno" value="" style="width:250px"/><br>
-				Fecha de nacimiento *<br>
-				<input type="datetime-local" id="consulta_fecha_nacimiento" value="" style="width:250px"/><br>
-				Teléfono<br>
-				<input type="number" id="consulta_telefono" value="" style="width:250px"/><br>
-				Genero<br>
-				<select id="consulta_genero" style="width:250px">
-					<option></option>
-					<option>Masculino</option>
-					<option>Femenino</option>
-				</select>
+				<input type="text" id="consulta_nombreArticulo" value="" style="width:250px"/><br>
+				Descripcion del Articulo *<br>
+				<input type="text" id="consulta_descripcionArticulo" value="" style="width:250px"/><br>
+				Precio *<br>
+				<input type="number" id="consulta_precio" value="" style="width:250px"/><br>
+				Cantidad*<br>
+				<input type="number" id="consulta_cantidad" value="1" style="width:250px"/><br>
 				<br>
 				<br>
 				<img id="consulta_imagen" width="100px" src="/usuario_sin_foto.png"></img>
 				<input type="file" id="consulta_file" onchange="readSingleFile(files,get('consulta_imagen'))" multiple="false" accept="image/*"/><br>
-				<button onclick="quita_foto()">Quitar foto</button><br>
-				<br>
-				<button type="button" onclick="modifica()" style="width:250px;height:40px">Guardar cambios</button></br>
+				<button type="button" onclick="mostrarDescripcion()" style="width:250px;height:40px">Descripcion</button></br>
+				<button type="button" onclick="compra()" style="width:250px;height:40px">Compra</button></br>
+				<button type="button" onclick="carritoCompra()" style="width:250px;height:40px">Compra</button></br>
 		</div>
 			<div id="boton_consulta">
 				<br>
-				<button type="button" onclick="consulta()" style="width:250px;height:40px">Buscar usuario</button></br>
+				<button type="button" onclick="consulta()" style="width:250px;height:40px">Buscar articulo</button></br>
 			</div>
 			<button type="button" onclick="cierra_pantalla_consulta()" style="width:250px;height:40px">Regresar</button></br>
 		</div>
 
-		<div id="borra_usuario" style="display:none">
+		<div id="borra_articulo" style="display:none">
 			<h2 style="text-align:center">Borra usuario</h2>
 			Email *<br>
 			<input type="email" id="borra_email" value="" style="width:250px"/><br><br>
-			<button type="button" onclick="borra()" style="width:250px;height:40px">Borrar usuario</button></br>
+			<button type="button" onclick="borra()" style="width:250px;height:40px">Borrar articulo</button></br>
 			<button type="button" onclick="oculta_pantalla('borra_usuario')" style="width:250px;height:40px">Regresar</button></br>
 		</div>
 
